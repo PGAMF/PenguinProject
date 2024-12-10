@@ -1,0 +1,313 @@
+---
+title: "Reproducible figures"
+output:
+    html_document: default
+  pdf_document: default
+date: "2024-12-07"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+
+#Load Packages
+library(tinytex)
+library(palmerpenguins)
+library(ggplot2)
+library(janitor)
+library(dplyr)
+library(svglite)
+
+#Load functions
+
+source("functions/cleaning.r")
+source("functions/plotting.r")
+
+```
+
+*The following is a template .rmd RMarkdown file for you to use for your homework submission.*
+
+*Please Knit your .rmd to a PDF format or HTML and submit that with no identifiers like your name.*
+
+*To create a PDF, first install tinytex and load the package. Then press the Knit arrow and select "Knit to PDF".*
+
+## QUESTION 01: Data Visualisation for Science Communication
+
+*Create a figure using the Palmer Penguin dataset that is correct but badly communicates the data. **Do not make a boxplot**.*
+
+*Use the following references to guide you:*
+
+-   [*https://www.nature.com/articles/533452a*](https://www.nature.com/articles/533452a){.uri}
+-   [*https://elifesciences.org/articles/16800*](https://elifesciences.org/articles/16800){.uri}
+
+*Note: Focus on visual elements rather than writing misleading text on it.*
+
+### a) Provide your figure here:
+
+```{r bad figure code, echo=FALSE}
+
+Bad_Plot_<- ggplot(data = penguins,
+                        aes(x = species, 
+                            y = flipper_length_mm)) +
+  geom_violin(aes(color = species)) + ylim(c(0, 250)) + scale_y_continuous(trans='log10')
+
+Bad_Plot_
+# There is no need to provide the code for your bad figure, just use echo=FALSE so the code is hidden. Make sure your figure is visible after you knit it. 
+
+```
+
+### b) Write about how your design choices mislead the reader about the underlying data (200-300 words).
+
+This figure misleads the reader
+
+\-
+
+\-
+
+\-
+
+\-
+
+\-
+
+\-
+
+\-
+
+*Include references.*
+
+\-
+
+\-
+
+------------------------------------------------------------------------
+
+## QUESTION 2: Data Pipeline
+
+*Write a data analysis pipeline in your .rmd RMarkdown file. You should be aiming to write a clear explanation of the steps, the figures visible, as well as clear code.*
+
+*Your code should include the steps practiced in the lab session:*
+
+-   *Load the data*
+
+-   *Appropriately clean the data*
+
+-   *Create an Exploratory Figure (**not a boxplot**)*
+
+-   *Save the figure*
+
+-   ***New**: Run a statistical test*
+
+-   ***New**: Create a Results Figure*
+
+-   *Save the figure*
+
+*An exploratory figure shows raw data, such as the distribution of the data. A results figure demonstrates the stats method chosen, and includes the results of the stats test.*
+
+*Between your code, communicate clearly what you are doing and why.*
+
+*Your text should include:*
+
+-   *Introduction*
+
+-   *Hypothesis*
+
+-   *Stats Method*
+
+-   *Results*
+
+-   *Discussion*
+
+-   *Conclusion*
+
+*You will be marked on the following:*
+
+### a) Your code for readability and functionality
+
+### b) Your figures for communication
+
+### c) Your text communication of your analysis
+
+*Below is a template you can use.*
+
+------------------------------------------------------------------------
+
+### Introduction
+
+The Palmer penguins data set is a data set that was collected in x. In this assignment i will load and analyse this data to see if there are relationships between the flipper length of penguins and their body mass.
+
+## Loading and preparing data
+
+firstly, it is important to lead the correct data and format it correctly so that it is clear what is being done with the data
+
+```{r Data Exploration}
+
+#Firstly i save the raw penguin data as a csv.This data comes from the PalmerPenguins package. This will not be overwrite to keep a record of the original data provided
+
+write.csv(penguins_raw, "data/data_raw.csv")
+
+#View the Column names and the table of the raw data 
+
+names(penguins_raw)
+head(penguins_raw)
+
+#from viewing the raw data we can see it is not well set up for analysis, for example it contains spaces.
+```
+
+I then clean the raw penguin data to make it easier to analyse. This uses functions defined in the cleaning.R file that can be found in the functions folder.
+
+```{r}
+
+#Clean the data by 
+penguins_clean <- penguins_raw %>%
+    clean_column_names() %>%
+    shorten_species() %>%
+    remove_empty_columns_rows()
+
+# We can then view the new column names of the cleaned data
+names(penguins_clean)
+
+```
+
+This data frame is much better suited to analysis, we can then save this cleaned up version.
+
+```{r}
+# Save
+
+write.csv(penguins_clean, "data/penguins_clean.csv")
+
+head(penguins_clean)
+```
+
+Having saved the new data frame we can plot an exploratory plot.
+
+##Exploratory plot
+
+#firslty, we subset the data so that it only contains the information we are interested in
+
+```{r Data Exploration}
+#filter clean data to only show mass and flipper length
+
+Mass_flipper_data <- penguins_clean %>%
+  subset_columns(c("body_mass_g", "flipper_length_mm", "species")) %>%
+  remove_NA()
+
+#view this new data frame
+head(Mass_flipper_data)
+
+#create a new csv with this subset of the data
+write.csv(Mass_flipper_data, "data/Mass_flipper_data.csv")
+
+
+```
+
+```{r}
+
+#Plot the exploratory table, this uses a function from the plotting.R file found in the functions folder
+
+ Mass_flipper_plot <- Plot_explor(Mass_flipper_data)
+ Mass_flipper_plot
+ 
+```
+
+```{r}
+#Save this figure as an SVG file
+
+svglite("figures/Mass_flipper_plot.svg",
+        width = 5.9, height = 5.9)
+Mass_flipper_plot
+dev.off()
+
+```
+
+From this exploratory figure we can see that there appears to be a strong positive correlation between body mass and flipper length \### Hypothesis
+
+My hypothesis here is that flipper length is correlated with body mass. The null hypothesis in this analysis is that there is no relationship between flipper length and body mass and the alternative hypothesis is that there is a correlation between the two measures.
+
+### Statistical Methods
+
+To identify if there is a correlation between flipper length and body mass, we can create a linear model
+
+```{r Statistics}
+
+#I create a linear model using the lm() function:
+
+linear_model <- lm(flipper_length_mm ~ body_mass_g, Mass_flipper_data)
+
+#I look at a summary table of my model and look at the coefficients:
+
+summary(linear_model)
+
+```
+
+From the summary table we can see that there is is significant postive correlation between flipper length and body mass. We can see form the r-squared value that body mass can predict 75.9% of variation in flipper length.
+
+However, in order to use this linear model we need to ensure some assumptions are met. We can visually assess whether these assumption are met by plotting out the graphs below.
+
+```{r}
+plot(linear_model, which = 2)
+plot(linear_model, which = 1)
+```
+
+```{r}
+anova(linear_model)
+```
+
+### Results & Discussion
+
+```{r Plotting Results}
+
+Results_figure <- Plot_point(Mass_flipper_data)
+Results_figure
+# Make sure your code prints. 
+
+```
+
+This figure shows a
+
+```{r}
+#save results figure
+svglite("figures/Results_figure.svg",
+        width = 5.9, height = 5.9)
+Results_figure
+dev.off()
+
+```
+
+### Conclusion
+
+------------------------------------------------------------------------
+
+## QUESTION 3: Open Science
+
+### a) GitHub
+
+*Upload your RProject you created for **Question 2** and any files and subfolders used to GitHub. Do not include any identifiers such as your name. Make sure your GitHub repo is public.*
+
+*GitHub link:*
+
+*You will be marked on your repo organisation and readability.*
+
+### b) Share your repo with a partner, download, and try to run their data pipeline.
+
+*Partner's GitHub link:*
+
+*You **must** provide this so I can verify there is no plagiarism between you and your partner.*
+
+### c) Reflect on your experience running their code. (300-500 words)
+
+-   *What elements of your partner's code helped you to understand their data pipeline?*
+
+-   *Did it run? Did you need to fix anything?*
+
+-   *What suggestions would you make for improving their code to make it more understandable or reproducible, and why?*
+
+-   *If you needed to alter your partner's figure using their code, do you think that would be easy or difficult, and why?*
+
+### d) Reflect on your own code based on your experience with your partner's code and their review of yours. (300-500 words)
+
+-   *What improvements did they suggest, and do you agree?*
+
+-   *What did you learn about writing code for other people?*
