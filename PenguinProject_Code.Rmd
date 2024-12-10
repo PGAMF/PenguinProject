@@ -64,7 +64,15 @@ Bad_plot
 
 This figure misleads the reader in a number of ways. Firslty, it is using the mean mass for each species of penguin. This hides the variation that exists within the masses of each species of penguin. By not indicating the range of data for each species, the reader can not gain any information about the spread of the data and may assume it is more uniform than it is in reality. Secondly, i have truncated the y axis to a range of 3000-6000.This misleads the reader by suggesting that Gentoo penguins have a much higher mass than the other species of penguin. By using the same colour for each species it also makes it more difficult for the reader to intuitively identify what the differences shown in the plot represent. Lastly, because the figure does not show any individual datapoints, it is impossible for the reader to know the sample size for each of these penguin species.
 
-*Include references.*
+*references.*
+
+Wainer, H. (1982). HOW TO DISPLAY DATA BADLY. ETS Research Report Series, 1982.
+pla
+
+Horst AM, Hill AP, Gorman KB (2020). palmerpenguins: Palmer
+Archipelago (Antarctica) penguin data. R package version 0.1.0.
+https://allisonhorst.github.io/palmerpenguins/. doi:
+10.5281/zenodo.3960218.
 
 ------------------------------------------------------------------------
 
