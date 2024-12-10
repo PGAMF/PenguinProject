@@ -22,8 +22,8 @@ library(svglite)
 
 #Load functions
 
-source("functions/cleaning.r")
-source("functions/plotting.r")
+source("Functions/cleaning.R")
+source("Functions/plotting.R")
 
 ```
 
@@ -48,39 +48,23 @@ source("functions/plotting.r")
 
 ```{r bad figure code, echo=FALSE}
 
-Bad_Plot_<- ggplot(data = penguins,
-                        aes(x = species, 
-                            y = flipper_length_mm)) +
-  geom_violin(aes(color = species)) + ylim(c(0, 250)) + scale_y_continuous(trans='log10')
+Bad_plot <- ggplot(penguins, aes(x = species, y = body_mass_g)) +
+  geom_bar(stat = "summary", fun = "mean", fill = "blue") +
+  coord_cartesian(ylim = c(3000, 6000)) + # Truncate the y-axis
+  labs(title = "Average Body Mass by Penguin Species",
+       y = "Body Mass (g)", x = "Species") +
+  theme_minimal()
 
-Bad_Plot_
-# There is no need to provide the code for your bad figure, just use echo=FALSE so the code is hidden. Make sure your figure is visible after you knit it. 
+Bad_plot
+# There is no need to provide the code for your bad figure, just use echo=FALSE so the code is hidden. Make sure your figure is visible after you knit it.  
 
 ```
 
 ### b) Write about how your design choices mislead the reader about the underlying data (200-300 words).
 
-This figure misleads the reader
-
-\-
-
-\-
-
-\-
-
-\-
-
-\-
-
-\-
-
-\-
+This figure misleads the reader in a number of ways. Firslty, it is using the mean mass for each species of penguin. This hides the variation that exists within the masses of each species of penguin. By not indicating the range of data for each species, the reader can not gain any information about the spread of the data and may assume it is more uniform than it is in reality. Secondly, i have truncated the y axis to a range of 3000-6000.This misleads the reader by suggesting that Gentoo penguins have a much higher mass than the other species of penguin. By using the same colour for each species it also makes it more difficult for the reader to intuitively identify what the differences shown in the plot represent. Lastly, because the figure does not show any individual datapoints, it is impossible for the reader to know the sample size for each of these penguin species.
 
 *Include references.*
-
-\-
-
-\-
 
 ------------------------------------------------------------------------
 
@@ -134,19 +118,21 @@ This figure misleads the reader
 
 ------------------------------------------------------------------------
 
-### Introduction
+## Introduction
 
-The Palmer penguins data set is a data set that was collected in x. In this assignment i will load and analyse this data to see if there are relationships between the flipper length of penguins and their body mass.
+The Palmer.penguins package includes data collected from three penguin species observed in the Palmer Archipelago, Antarctica, that were collected by Dr. Kristen Gorman with Palmer Station LTER. This data set includes a large number of measurements regarding the morphological characteristics of these penguins. In this analysis, i am interested in investigating the relationship between the body mass of penguins and their flipper length. This is of interest as may provide insight into the functional morphology of penguin anatomy. Flipper morphology will impact swimming efficiency, and body mass will impact bouyancy and energy expenditure. This analysis will exploring the relationship between these features and may provide insight into morphological constraints in penguins.
 
-## Loading and preparing data
+Before carrying out this analysis, however, it is important to prepare the data for the analysis i am planning to do.
 
-firstly, it is important to lead the correct data and format it correctly so that it is clear what is being done with the data
+### Loading and preparing the data for analysis
+
+firstly, it is important to load the correct data and format it correctly.
 
 ```{r Data Exploration}
 
 #Firstly i save the raw penguin data as a csv.This data comes from the PalmerPenguins package. This will not be overwrite to keep a record of the original data provided
 
-write.csv(penguins_raw, "data/data_raw.csv")
+write.csv(penguins_raw, "Data/data_raw.csv")
 
 #View the Column names and the table of the raw data 
 
@@ -154,13 +140,17 @@ names(penguins_raw)
 head(penguins_raw)
 
 #from viewing the raw data we can see it is not well set up for analysis, for example it contains spaces.
+
 ```
+
+### Cleaning data
 
 I then clean the raw penguin data to make it easier to analyse. This uses functions defined in the cleaning.R file that can be found in the functions folder.
 
 ```{r}
 
-#Clean the data by 
+#Clean the data by removing NAs, shortening species names and formatiing column names to be used in R. 
+
 penguins_clean <- penguins_raw %>%
     clean_column_names() %>%
     shorten_species() %>%
@@ -171,37 +161,44 @@ names(penguins_clean)
 
 ```
 
+### Save clean data
+
 This data frame is much better suited to analysis, we can then save this cleaned up version.
 
 ```{r}
-# Save
-
-write.csv(penguins_clean, "data/penguins_clean.csv")
+# Save cleaned data as a csv.
+write.csv(penguins_clean, "Data/penguins_clean.csv")
 
 head(penguins_clean)
 ```
 
 Having saved the new data frame we can plot an exploratory plot.
 
-##Exploratory plot
+## Exploratory plot
 
-#firslty, we subset the data so that it only contains the information we are interested in
+An exploratory plot shows the raw data without any analysis or a model fitted. In this case, the most useful exploratory plot is a scatter plot that may show whether there appears to be any correlation between these two continuous variable.
+
+### Subset data
+
+firstly, we subset the data so that it only contains the information we are interested in. In this case the only data we are interested in is the flipper length and body mass of each penguin.
 
 ```{r Data Exploration}
 #filter clean data to only show mass and flipper length
 
 Mass_flipper_data <- penguins_clean %>%
-  subset_columns(c("body_mass_g", "flipper_length_mm", "species")) %>%
+  subset_columns(c("body_mass_g", "flipper_length_mm")) %>%
   remove_NA()
 
 #view this new data frame
 head(Mass_flipper_data)
 
 #create a new csv with this subset of the data
-write.csv(Mass_flipper_data, "data/Mass_flipper_data.csv")
+write.csv(Mass_flipper_data, "Data/Mass_flipper_data.csv")
 
 
 ```
+
+### Generate an exploratory plot
 
 ```{r}
 
@@ -212,23 +209,27 @@ write.csv(Mass_flipper_data, "data/Mass_flipper_data.csv")
  
 ```
 
+From this exploratory figure we can see that there appears to be a strong positive correlation between body mass and flipper length.
+
+### Save figure
+
 ```{r}
 #Save this figure as an SVG file
 
-svglite("figures/Mass_flipper_plot.svg",
+svglite("Figures/Mass_flipper_plot.svg",
         width = 5.9, height = 5.9)
 Mass_flipper_plot
 dev.off()
 
 ```
 
-From this exploratory figure we can see that there appears to be a strong positive correlation between body mass and flipper length \### Hypothesis
+## Hypothesis
 
 My hypothesis here is that flipper length is correlated with body mass. The null hypothesis in this analysis is that there is no relationship between flipper length and body mass and the alternative hypothesis is that there is a correlation between the two measures.
 
 ### Statistical Methods
 
-To identify if there is a correlation between flipper length and body mass, we can create a linear model
+To identify if there is a correlation between flipper length and body mass, i can create a linear regression model. This can be done by using the lm() function which will fit a linear regression model to the data and give me the coefficients and the p values associated with these coefficients.
 
 ```{r Statistics}
 
@@ -236,39 +237,57 @@ To identify if there is a correlation between flipper length and body mass, we c
 
 linear_model <- lm(flipper_length_mm ~ body_mass_g, Mass_flipper_data)
 
-#I look at a summary table of my model and look at the coefficients:
+# Extract coefficients and R-squared
+coefficients <- summary(linear_model)$coefficients
+r_squared <- summary(linear_model)$r.squared
 
-summary(linear_model)
+# Combine coefficients with R-squared
+output <- list(
+  Coefficients = coefficients,
+  R_squared = r_squared
+)
+
+# Print the output
+output
 
 ```
 
-From the summary table we can see that there is is significant postive correlation between flipper length and body mass. We can see form the r-squared value that body mass can predict 75.9% of variation in flipper length.
+From the summary table we can see that there is positive correlation between flipper length and body mass. The Estimate for the Y intercept is 1.367e+02 and the estimate for the slope is 1.528e-02 We can see form the r-squared value that body mass can predict 75.9% of variation in flipper length, making it biologically significant. The p values for both of these estimates is highly significant at \<2e-16
 
-However, in order to use this linear model we need to ensure some assumptions are met. We can visually assess whether these assumption are met by plotting out the graphs below.
+### Validation of assumptions.
+
+In order to use this linear model, we need to ensure some assumptions are met. the assumptions for this model is that the residuals of this data are normally distributed and that the variance is roughly equal for all values of x. We can visually assess whether these assumption are met by plotting out the graphs below.
 
 ```{r}
+#Shapiro Wilks test for normality
 plot(linear_model, which = 2)
+
+#Breusch-Pagan test to test for Homoscedasticity:
 plot(linear_model, which = 1)
 ```
 
-```{r}
-anova(linear_model)
-```
+From visual inspection, we can confirm the assumptions stated above.
 
-### Results & Discussion
+## Results & Discussion
+
+### Results figure
+
+We can use the results from this linear model to add our model to the graph showing the penguin data. We can also add 95% confidence intervals which can be seen in the pink shaded area around the linear regression line.
 
 ```{r Plotting Results}
 
+#plot the raw data with the linear regression line and the 95% confidence intervals. The function for this can be found in plotting.R
 Results_figure <- Plot_point(Mass_flipper_data)
 Results_figure
-# Make sure your code prints. 
+
 
 ```
 
-This figure shows a
+### Save results figure
 
 ```{r}
-#save results figure
+#save results figure as an svg file. 
+
 svglite("figures/Results_figure.svg",
         width = 5.9, height = 5.9)
 Results_figure
@@ -277,6 +296,8 @@ dev.off()
 ```
 
 ### Conclusion
+
+My analysis shows that there is a positive correlation between flipper length and body mass in the penguins from the palmer's penguins data set. Body mass predicts 75.9% of variation in flipper length. Further study could investigate whether this correlation exists or is different between the three species present in the data set.
 
 ------------------------------------------------------------------------
 
