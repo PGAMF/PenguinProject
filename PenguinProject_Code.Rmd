@@ -1,8 +1,8 @@
 ---
-title: "Reproducible figures"
+title: "Reproducible Figures Asssignment"
 output:
-    html_document: default
-  pdf_document: default
+html_document: default
+pdf_document: default
 date: "2024-12-07"
 ---
 
@@ -10,20 +10,28 @@ date: "2024-12-07"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
+
+renv::restore()
+#restores all packages to those used in this project 
 
 #Load Packages
 library(tinytex)
+library(here)
+library(tidyverse)
 library(palmerpenguins)
 library(ggplot2)
 library(janitor)
 library(dplyr)
 library(svglite)
+library(renv)
+here::here()
+#returns the path to the root directory of the project.
 
 #Load functions
-
 source("Functions/cleaning.R")
 source("Functions/plotting.R")
+
 
 ```
 
@@ -147,7 +155,7 @@ head(penguins_raw)
 
 I then clean the raw penguin data to make it easier to analyse. This uses functions defined in the cleaning.R file that can be found in the functions folder.
 
-```{r}
+```{r Data Exploration}
 
 #Clean the data by removing NAs, shortening species names and formatiing column names to be used in R. 
 
@@ -165,7 +173,7 @@ names(penguins_clean)
 
 This data frame is much better suited to analysis, we can then save this cleaned up version.
 
-```{r}
+```{r Data Exploration}
 # Save cleaned data as a csv.
 write.csv(penguins_clean, "Data/penguins_clean.csv")
 
@@ -200,7 +208,7 @@ write.csv(Mass_flipper_data, "Data/Mass_flipper_data.csv")
 
 ### Generate an exploratory plot
 
-```{r}
+```{r Data Exploration}
 
 #Plot the exploratory table, this uses a function from the plotting.R file found in the functions folder
 
@@ -213,7 +221,7 @@ From this exploratory figure we can see that there appears to be a strong positi
 
 ### Save figure
 
-```{r}
+```{r Data Exploration}
 #Save this figure as an SVG file
 
 svglite("Figures/Mass_flipper_plot.svg",
@@ -297,7 +305,7 @@ dev.off()
 
 ### Conclusion
 
-My analysis shows that there is a positive correlation between flipper length and body mass in the penguins from the palmer's penguins data set. Body mass predicts 75.9% of variation in flipper length. Further study could investigate whether this correlation exists or is different between the three species present in the data set.
+My analysis shows that there is a positive correlation between flipper length and body mass in the penguins from the Palmer's penguins data set. Body mass predicts 75.9% of variation in flipper length. Further study could investigate whether this correlation exists or is different between the three species present in the data set.
 
 ------------------------------------------------------------------------
 
