@@ -41,46 +41,6 @@ source("Functions/plotting.R")
 
 *To create a PDF, first install tinytex and load the package. Then press the Knit arrow and select "Knit to PDF".*
 
-## QUESTION 01: Data Visualisation for Science Communication
-
-*Create a figure using the Palmer Penguin dataset that is correct but badly communicates the data. **Do not make a boxplot**.*
-
-*Use the following references to guide you:*
-
--   [*https://www.nature.com/articles/533452a*](https://www.nature.com/articles/533452a){.uri}
--   [*https://elifesciences.org/articles/16800*](https://elifesciences.org/articles/16800){.uri}
-
-*Note: Focus on visual elements rather than writing misleading text on it.*
-
-### a) Provide your figure here:
-
-```{r bad figure code, echo=FALSE}
-
-Bad_plot <- ggplot(penguins, aes(x = species, y = body_mass_g)) +
-  geom_bar(stat = "summary", fun = "mean", fill = "blue") +
-  coord_cartesian(ylim = c(3000, 6000)) + # Truncate the y-axis
-  labs(title = "Average Body Mass by Penguin Species",
-       y = "Body Mass (g)", x = "Species") +
-  theme_minimal()
-
-Bad_plot
-# There is no need to provide the code for your bad figure, just use echo=FALSE so the code is hidden. Make sure your figure is visible after you knit it.  
-
-```
-
-### b) Write about how your design choices mislead the reader about the underlying data (200-300 words).
-
-This figure misleads the reader in a number of ways. Firslty, it is using the mean mass for each species of penguin. This hides the variation that exists within the masses of each species of penguin. By not indicating the range of data for each species, the reader can not gain any information about the spread of the data and may assume it is more uniform than it is in reality. Secondly, i have truncated the y axis to a range of 3000-6000.This misleads the reader by suggesting that Gentoo penguins have a much higher mass than the other species of penguin. By using the same colour for each species it also makes it more difficult for the reader to intuitively identify what the differences shown in the plot represent. Lastly, because the figure does not show any individual datapoints, it is impossible for the reader to know the sample size for each of these penguin species.
-
-*references.*
-
-Wainer, H. (1982). HOW TO DISPLAY DATA BADLY. ETS Research Report Series, 1982.
-pla
-
-Horst AM, Hill AP, Gorman KB (2020). palmerpenguins: Palmer
-Archipelago (Antarctica) penguin data. R package version 0.1.0.
-https://allisonhorst.github.io/palmerpenguins/. doi:
-10.5281/zenodo.3960218.
 
 ------------------------------------------------------------------------
 
