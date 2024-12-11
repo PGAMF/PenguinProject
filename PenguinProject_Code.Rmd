@@ -315,38 +315,3 @@ dev.off()
 
 My analysis shows that there is a positive correlation between flipper length and body mass in the penguins from the Palmer's penguins data set. Body mass predicts 75.9% of variation in flipper length. Further study could investigate whether this correlation exists or is different between the three species present in the data set.
 
-------------------------------------------------------------------------
-
-## QUESTION 3: Open Science
-
-### a) GitHub
-
-*Upload your RProject you created for **Question 2** and any files and subfolders used to GitHub. Do not include any identifiers such as your name. Make sure your GitHub repo is public.*
-
-dd
-
-*GitHub link:*
-
-*You will be marked on your repo organisation and readability.*
-
-### b) Share your repo with a partner, download, and try to run their data pipeline.
-
-*Partner's GitHub link:*
-
-*You **must** provide this so I can verify there is no plagiarism between you and your partner.*
-
-### c) Reflect on your experience running their code. (300-500 words)
-
--   *What elements of your partner's code helped you to understand their data pipeline?*
-
--   *Did it run? Did you need to fix anything?*
-
--   *What suggestions would you make for improving their code to make it more understandable or reproducible, and why?*
-
--   *If you needed to alter your partner's figure using their code, do you think that would be easy or difficult, and why?*
-
-### d) Reflect on your own code based on your experience with your partner's code and their review of yours. (300-500 words)
-
--   *What improvements did they suggest, and do you agree?*
-
--   *What did you learn about writing code for other people?*
