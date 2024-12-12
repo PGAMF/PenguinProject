@@ -12,7 +12,7 @@ date: "2024-12-07"
 
 #If renv::restore is not running please run the code in activate.R which can be found in the renv folder.
 renv::restore()
-# renv::resotre() restores all packages to those used in this project 
+# renv::restore() restores all packages to those used in this project 
 
 #Load Packages
 library(tinytex)
