@@ -6,14 +6,13 @@ pdf_document: default
 date: "2024-12-07"
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+##Set up packages and functions
 
 ```{r message=FALSE, warning=FALSE}
 
+#If renv::restore is not running please run the code in activate.R which can be found in the renv folder.
 renv::restore()
-#restores all packages to those used in this project 
+# renv::resotre() restores all packages to those used in this project 
 
 #Load Packages
 library(tinytex)
@@ -25,6 +24,7 @@ library(janitor)
 library(dplyr)
 library(svglite)
 library(renv)
+
 here::here()
 #returns the path to the root directory of the project.
 
@@ -32,9 +32,11 @@ here::here()
 source("Functions/cleaning.R")
 source("Functions/plotting.R")
 
-
 ```
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
 *The following is a template .rmd RMarkdown file for you to use for your homework submission.*
 
 *Please Knit your .rmd to a PDF format or HTML and submit that with no identifiers like your name.*
@@ -265,7 +267,7 @@ Results_figure
 ```{r}
 #save results figure as an svg file. 
 
-svglite("figures/Results_figure.svg",
+svglite("Figures/Results_figure.svg",
         width = 5.9, height = 5.9)
 Results_figure
 dev.off()
