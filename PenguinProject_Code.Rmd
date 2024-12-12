@@ -41,8 +41,9 @@ source("Functions/plotting.R")
 
 *To create a PDF, first install tinytex and load the package. Then press the Knit arrow and select "Knit to PDF".*
 
-
 ------------------------------------------------------------------------
+
+*This code only contains my answers for Question 2 of this assignment. 
 
 ## QUESTION 2: Data Pipeline
 
