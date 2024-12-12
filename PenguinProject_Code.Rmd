@@ -34,9 +34,6 @@ source("Functions/plotting.R")
 
 ```
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 *The following is a template .rmd RMarkdown file for you to use for your homework submission.*
 
 *Please Knit your .rmd to a PDF format or HTML and submit that with no identifiers like your name.*
