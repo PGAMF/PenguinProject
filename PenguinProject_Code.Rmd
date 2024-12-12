@@ -10,6 +10,8 @@ date: "2024-12-07"
 
 ```{r message=FALSE, warning=FALSE}
 
+#Note: this code was written and tested using a posit cloud workspace.
+
 #If renv::restore is not running please run the code in activate.R which can be found in the renv folder.
 renv::restore()
 # renv::restore() restores all packages to those used in this project 
